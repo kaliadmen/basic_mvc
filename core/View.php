@@ -8,7 +8,7 @@
 
         }
 
-        public function render($viewName) {
+        public function render(string $viewName) : void {
             $viewArr = explode('/', $viewName);
             $viewString = implode(DS, $viewArr);
 
@@ -20,7 +20,7 @@
             }
         }
 
-        public function content($type){
+        public function content(string $type) {
             switch($type) {
                 case 'head':
                     return $this->_head;
@@ -39,12 +39,12 @@
             return false; */
         }
 
-        public function start($type) {
+        public function start(string $type) : void {
             $this->_outputType = $type;
             ob_start();
         }
 
-        public function end() {
+        public function end() : void {
             switch($this->_outputType){
                 case 'head':
                     $this->_head = ob_get_clean();
@@ -65,15 +65,17 @@
             }*/
         }
 
-        public function siteTitle() {
+        public function getSiteTitle() : string {
             return $this->_siteTitle;
         }
         
-        public function setSiteTitle($title) {
+        public function setSiteTitle(string $title) : void {
             $this->_siteTitle = $title;
+            return;
         }
 
-        public function setLayout($path) {
+        public function setLayout(string $path) : void {
             $this->_layout = $path;
+            return;
         }
     }

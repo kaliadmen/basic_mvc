@@ -1,6 +1,7 @@
 <?php
-    class Router{
-        public static function route($url) {
+    class Router {
+
+        public static function route(array $url) : void{
             //controller
             $controller_name = (isset($url[0]) && $url[0] != '') ?  ucwords($url[0]) : DEFAULT_CONTROLLER;
             $controllerLocation = ROOT.DS.'app'.DS.'controllers'.DS.$controller_name.'.php';
