@@ -21,7 +21,7 @@
 
             return self::$_instance;
         }
-
+        //gets data from database
         public function query(string $sql, array $params = []) : Db {
             $this->_error = false;
             if($this->_query = $this->_pdo->prepare($sql)) {
@@ -46,4 +46,33 @@
             return $this;
         }
 
+        //puts data into database
+        public function insert(string $table, array $columns = []) : bool {
+            $columnString = '';
+            $valueString = '';
+            $values = [];
+
+            //build column and value string for insert statement
+            foreach($columns as $column => $value) {
+                $columnString .= '`'.$column.'`,';
+                //values will be bind in query call
+                $valueString .='?,';
+                $values[] = $value;
+            }
+
+            //remove extra commas added from foreach loop
+            $columnString = rtrim($columnString, ',');
+            $valueString = rtrim($valueString, ',');
+
+            $sql = "INSERT INTO {$table} ({$columnString}) VALUES ({$valueString})";
+            if(!$this->query($sql, $values)->error()) {
+                return true;
+            }
+                return false;
+        }
+
+        public function error() : bool {
+            return $this->_error;
+        }
+        
     }
