@@ -13,7 +13,7 @@
             }
         }
 
-        //Only one instance of Db class can be used
+        //only one instance of Db class can be used
         public static function getInstance() : Db {
             if(!isset(self::$_instance)) {
                 self::$_instance = new Db();
@@ -21,6 +21,7 @@
 
             return self::$_instance;
         }
+
         //gets data from database
         public function query(string $sql, array $params = []) : Db {
             $this->_error = false;
@@ -55,7 +56,7 @@
             //build column and value string for insert statement
             foreach($columns as $column => $value) {
                 $columnString .= '`'.$column.'`,';
-                //values will be bind in query call
+                //values will be bound in query call
                 $valueString .='?,';
                 $values[] = $value;
             }
@@ -71,8 +72,39 @@
                 return false;
         }
 
+        //updates data in database
+        public function update(string $table, int $id, array $columns) : bool {
+            $columnString = '';
+            $values = [];
+
+            //build column and value string for insert statement
+            foreach($columns as $column => $value) {
+                $columnString .= ' '.$column.'= ?,';
+                $values[] = $value;
+            }
+
+
+            $columnString = trim($columnString);
+            $columnString = rtrim($columnString, ',');
+
+            $sql = "UPDATE {$table}  SET {$columnString} WHERE id = {$id}";
+            if(!$this->query($sql, $values)->error()) {
+                return true;
+            }
+            return false;
+        }
+
+        //delete data from database
+        public function delete(string $table, int $id) : bool {
+            $sql = "DELETE FROM {$table} WHERE id = {$id}";
+            if(!$this->query($sql)->error()) {
+                return true;
+            }
+            return false;
+        }
+
         public function error() : bool {
             return $this->_error;
         }
-        
+
     }
