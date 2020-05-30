@@ -31,12 +31,6 @@
                 default:
                     return false;
             }
-            /* if($type == 'head') {
-                return $this->_head;
-            } elseif($type == 'body') {
-                return $this->_body;
-            }
-            return false; */
         }
 
         public function start(string $type) : void {
@@ -56,25 +50,18 @@
                     die('You must first run the start method.');
                     break;
             }
-            /* if($this->_outputType == 'head') {
-                $this->_head = ob_get_clean();
-            } elseif($this->_outputType == 'body') {
-                $this->_body = ob_get_clean();
-            } else {
-                die('You must first run the start method.');
-            }*/
         }
 
-        public function getSiteTitle() : string {
+        public function get_site_title() : string {
             return $this->_siteTitle;
         }
         
-        public function setSiteTitle(string $title) : void {
+        public function set_site_title(string $title) : void {
             $this->_siteTitle = $title;
             return;
         }
 
-        public function setLayout(string $path) : void {
+        public function set_layout(string $path) : void {
             $this->_layout = $path;
             return;
         }

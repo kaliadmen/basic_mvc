@@ -103,6 +103,32 @@
             return false;
         }
 
+        //gets results from query
+        public function get_result() : array {
+            return $this->_result;
+        }
+
+        //gets first result from query
+        public function get_first_result() : stdClass {
+            return (!empty($this->_result)) ? $this->_result[0] : new stdClass();
+        }
+
+        //gets row count from query
+        public function get_count() : int {
+            return  $this->_count;
+        }
+
+        //gets last inserted id
+        public function get_last_ld()  : int {
+            return (int) $this->_lastInsertID;
+        }
+
+        //get columns names from table passed in
+        public function get_columns(string $table) : array {
+            return $this->query("SHOW COLUMNS FROM {$table}")->get_result();
+        }
+
+        //returns if there is an error in query
         public function error() : bool {
             return $this->_error;
         }
