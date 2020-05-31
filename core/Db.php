@@ -103,6 +103,77 @@
             return false;
         }
 
+        //builds up a condition string for condition query method
+        protected function _build_condition_string($conditions) : string {
+            $condition_string = '';
+
+            if(is_array($conditions)){
+                foreach($conditions as $condition) {
+                    $condition_string .= ' '.$condition.' AND';
+                }
+                $condition_string = trim($condition_string);
+                $condition_string = rtrim($condition_string, ' AND');
+            }else {
+                $condition_string = $conditions;
+            }
+            if($condition_string != ''){
+                $condition_string = ' WHERE '.$condition_string;
+                return $condition_string;
+            }else{
+                return $condition_string;
+            }
+        }
+
+        //makes a query to passed in table with conditions passed in as parameters
+        protected function _condition_query(string $table, array $params = []) : bool {
+            $condition_string = '';
+            $bind = [];
+            $order = '';
+            $limit = '';
+
+            //conditions
+            if(isset($params['conditions'])) {
+                $condition_string = $this->_build_condition_string($params['conditions']);
+            }
+            //bind
+            if(array_key_exists('bind', $params)) {
+                $bind =$params['bind'];
+            }
+            //order
+            if(array_key_exists('order', $params)) {
+                $order = ' ORDER BY '.$params['order'];
+            }
+            //limit
+            if(array_key_exists('limit', $params)) {
+                $limit = ' LIMIT '.$params['limit'];
+            }
+
+            $sql = "SELECT * FROM {$table}{$condition_string}{$order}{$limit}";
+            if($this->query($sql, $bind)) {
+                if(!count($this->_result)) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        //finds all records in database table based on passed in parameters
+        public function find(string $table, array $params = []) : array {
+            if($this->_condition_query($table, $params)) {
+                return $this->get_result();
+            }
+            return ['error' => 'No results found!'];
+        }
+
+        //finds first records in database table based on passed in parameters
+        public function find_first(string $table, array $params = []) : stdClass {
+            if($this->_condition_query($table, $params)) {
+                return $this->get_first_result();
+            }
+            return (object) ['error' => 'No results found!'];
+        }
+
         //gets results from query
         public function get_result() : array {
             return $this->_result;
@@ -110,7 +181,7 @@
 
         //gets first result from query
         public function get_first_result() : stdClass {
-            return (!empty($this->_result)) ? $this->_result[0] : new stdClass();
+            return (!empty($this->_result)) ? $this->_result[0] : (object) ['error' => 'No results found!'];
         }
 
         //gets row count from query
