@@ -7,3 +7,9 @@
             die;
         }
     }
+
+if (!function_exists('sanitize'))  {
+    function sanitize(string $dirty) : string {
+        return htmlentities($dirty, ENT_QUOTES, 'UTF-8');
+    }
+}
