@@ -9,7 +9,7 @@
          return $_SESSION[$name];
      }
 
-     public static function set(string $name, string $value) : string {
+     public static function set(string $name, $value) : string {
          return $_SESSION[$name] = $value;
      }
 

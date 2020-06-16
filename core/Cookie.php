@@ -9,7 +9,7 @@
             return $_COOKIE[$name];
         }
 
-        public static function set(string $name, string $value, int $expire) : bool {
+        public static function set(string $name, $value, int $expire) : bool {
             if(setcookie($name, $value, time() + $expire, '/')) {
                 return true;
             }

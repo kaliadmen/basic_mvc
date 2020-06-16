@@ -22,6 +22,7 @@ class Model {
         $columns = $this->get_columns();
 
         foreach($columns as $column) {
+            $columnName = $column->Field;
             $this->_columnNames[] = $column->Field;
             $this->{$columnName} = null;
         }
@@ -49,7 +50,7 @@ class Model {
 
     }
 
-    public function find_first(array $params = []) : stdClass {
+    public function find_first(array $params = [])  {
         $result_query = $this->_db->find_first($this->_table, $params);
         $result = new $this->_modelName($this->_table);
         $result->_populate_object_data($result_query);

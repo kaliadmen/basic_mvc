@@ -30,3 +30,12 @@
     //used if no site title is set
     define('SITE_TITLE', 'Tsudo MVC');
 
+    //session name for logged in user
+    define('CURRENT_USER_SESSION_NAME', 'xkwErsudiGLoDqtUryPKvX');
+
+    //cookie name for logged in user
+    define('REMEMBER_ME_COOKIE_NAME',   'erQjky54Gdbit0doxYw68P');
+
+    //time in seconds for remember me cookie to live (30 days)
+    define('REMEMBER_COOKIE_EXPIRE',   2592000);
+

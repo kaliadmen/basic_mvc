@@ -27,4 +27,19 @@
                 die('That method does not exist in the controller "'.$controller_name.'"');
             }
         }
+
+        public static function redirect(string $location) {
+            if(!headers_sent()) {
+                header('Location: '.PROJECTROOT.$location);
+                exit();
+            }else {
+                echo('<script type="text/javascript>"');
+                echo('window.location.href="'.PROJECTROOT.$location.'";');
+                echo('</script>');
+                echo('<noscript>');
+                echo('<meta http-equiv="refresh" content="0;url='.$location.'" />');
+                echo('</noscript>');
+                exit();
+            }
+        }
     }

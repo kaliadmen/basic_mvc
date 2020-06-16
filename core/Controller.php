@@ -11,4 +11,10 @@
             $this->_action = $action;
             $this->view = new View();
         }
+
+        protected function load_model(string $model) {
+            if(class_exists($model)) {
+                $this->{$model.'Model'} = new $model(strtolower($model));
+            }
+        }
     }
