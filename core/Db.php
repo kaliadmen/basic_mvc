@@ -14,7 +14,7 @@
         }
 
         //only one instance of Db class can be used
-        public static function getInstance() : Db {
+        public static function get_instance() : Db {
             if(!isset(self::$_instance)) {
                 self::$_instance = new Db();
             }
@@ -171,7 +171,7 @@
             if($this->_condition_query($table, $params)) {
                 return $this->get_first_result();
             }
-            return (object) ['error' => 'No results found!'];
+            return (object) ['DB-Error' => 'No results found!'];
         }
 
         //gets results from query

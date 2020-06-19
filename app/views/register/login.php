@@ -104,6 +104,7 @@
                 </div>
                 <div class="card-body">
                     <form class="form" action="<?=PROJECTROOT?>register/login" method="post">
+                        <div class="bg-danger"><?=$this->display_errors ?></div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -118,7 +119,7 @@
                             <input type="password" name="password" id="password" class="form-control" placeholder="password">
                         </div>
                         <div class="row align-items-center remember">
-                            <input type="checkbox" id="remember_me" name="remember_me" value="on">Remember Me
+                            <input type="checkbox" id="remember_me" name="remember_me" checked value="true">Remember Me
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn float-right login_btn">

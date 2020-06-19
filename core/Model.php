@@ -5,7 +5,7 @@ class Model {
     public $id;
 
     public function __construct(string $table) {
-        $this->_db = DB::getInstance();
+        $this->_db = DB::get_instance();
         $this->_table = $table;
         $this->_set_table_columns();
         $this->_modelName = str_replace(
@@ -53,8 +53,11 @@ class Model {
     public function find_first(array $params = [])  {
         $result_query = $this->_db->find_first($this->_table, $params);
         $result = new $this->_modelName($this->_table);
-        $result->_populate_object_data($result_query);
+        if($result_query) {
+            $result->_populate_object_data($result_query);
+        }
         return $result;
+
 
     }
 
