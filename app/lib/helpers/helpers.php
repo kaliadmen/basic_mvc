@@ -8,8 +8,14 @@
         }
     }
 
-if (!function_exists('sanitize'))  {
-    function sanitize(string $dirty) : string {
-        return htmlentities($dirty, ENT_QUOTES, 'UTF-8');
+    if (!function_exists('sanitize'))  {
+        function sanitize(string $dirty) : string {
+            return htmlentities($dirty, ENT_QUOTES, 'UTF-8');
     }
+
+        if (!function_exists('get_current_user')) {
+            function get_current_user() : Users {
+                return Users::current_logged_in_user();
+            }
+        }
 }

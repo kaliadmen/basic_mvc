@@ -40,4 +40,11 @@ class Register extends Controller {
 
         $this->view->render('register/login');
     }
+
+    public function logoutAction() : void {
+        if(get_current_user()) {
+            get_current_user()->logout();
+        }
+        Router::redirect('register/login');
+    }
 }
