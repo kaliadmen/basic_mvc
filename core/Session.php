@@ -19,7 +19,7 @@
          }
      }
 
-     public static function uagent_version() : string {
+     public static function get_user_agent_without_version() : string {
          $uagent = $_SERVER['HTTP_USER_AGENT'];
          $regx = '/\/[a-zA-Z0-9.]+/';
          $uagent_string = preg_replace($regx, '', $uagent);

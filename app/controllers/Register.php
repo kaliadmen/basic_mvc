@@ -9,6 +9,7 @@ class Register extends Controller {
 
     public function loginAction() : void {
         $validation = new Validate();
+
         if($_POST) {
           $validation->validation($_POST, [
               'username' => [
@@ -21,13 +22,13 @@ class Register extends Controller {
                   'min' => 6
               ]
           ]);
+
           if($validation->is_valid()) {
-              $user = $this->UsersModel->find_by_username($_POST['username']);
+              $user = $this->Users_Model->find_by_username($_POST['username']);
 
               if($user && password_verify(Input::get('password'), $user->password)) {
                   $remember = (isset($_POST['remember_me']) && Input::get('remember_me')) ? true : false;
                   $user->login($remember);
-
                   Router::redirect('');
               }else {
                   $validation->add_error("There is and error with your username or password");
@@ -42,8 +43,8 @@ class Register extends Controller {
     }
 
     public function logoutAction() : void {
-        if(get_current_user()) {
-            get_current_user()->logout();
+        if(current_user()) {
+            current_user()->logout();
         }
         Router::redirect('register/login');
     }

@@ -149,12 +149,14 @@
             }
 
             $sql = "SELECT * FROM {$table}{$condition_string}{$order}{$limit}";
+
             if($this->query($sql, $bind)) {
                 if(!count($this->_result)) {
                     return false;
                 }
                 return true;
             }
+
             return false;
         }
 

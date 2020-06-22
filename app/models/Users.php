@@ -34,6 +34,19 @@
             return self::$currentLoggedInUser;
         }
 
+        public static function login_user_from_cookie() : Users {
+            $user_session = UsersSessions::get_cookie_data();
+
+            if($user_session->user_id != '') {
+                $user = new self((int)$user_session->user_id);
+            }
+
+            if($user) {
+                $user->login();
+            }
+            return $user;
+        }
+
         public function find_by_username(string $username) : Users {
             return $this->find_first(['conditions' => 'username = ?', 'bind' => [$username]]);
         }
@@ -43,23 +56,29 @@
 
             if($remember_me) {
                 $hash = md5(uniqid(rand(0, 100), true));
-                $user_agent = Session::uagent_version();
+                $user_agent = Session::get_user_agent_without_version();
 
-                Cookie::set($this->_cookieName, $hash, REMEMBER_COOKIE_EXPIRE);
+                Cookie::set($this->_cookieName, $hash, REMEMBER_ME_COOKIE_EXPIRE);
 
                 $query_data = ['session' => $hash, 'user_agent' => $user_agent, 'user_id' => $this->id];
 
                 //remove old session from database
-                $this->_db->query("DELETE FROM user_sessions WHERE user_id = ? AND user_agent = ?", [$this->id, $user_agent]);
+                $this->_db->query("DELETE FROM users_sessions WHERE user_id = ? AND user_agent = ?", [$this->id, $user_agent]);
 
                 //add new session to database
-                $this->_db->insert('user_sessions', $query_data);
+                $this->_db->insert('users_sessions', $query_data);
             }
         }
 
         public function logout() : bool {
-            $user_agent = Session::uagent_version();
-            $this->_db->query("DELETE FROM user_sessions WHERE user_id = ? AND user_agent = ?",[$this->id, $user_agent]);
+            $user_agent = Session::get_user_agent_without_version();
+            $user_session = UsersSessions::get_cookie_data();
+
+            if($user_session) {
+                $user_session->delete($user_session->user_id);
+            }
+
+            $this->_db->query("DELETE FROM users_sessions WHERE user_id = ? AND user_agent = ?",[$this->id, $user_agent]);
 
             Session::delete(CURRENT_USER_SESSION_NAME);
 

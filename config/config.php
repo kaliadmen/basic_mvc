@@ -37,5 +37,5 @@
     define('REMEMBER_ME_COOKIE_NAME',   'erQjky54Gdbit0doxYw68P');
 
     //time in seconds for remember me cookie to live (30 days)
-    define('REMEMBER_COOKIE_EXPIRE',   2592000);
+    define('REMEMBER_ME_COOKIE_EXPIRE',   2592000);
 

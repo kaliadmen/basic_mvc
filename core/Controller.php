@@ -14,7 +14,7 @@
 
         protected function load_model(string $model) {
             if(class_exists($model)) {
-                $this->{$model.'Model'} = new $model(strtolower($model));
+                $this->{$model.'_Model'} = new $model(strtolower($model));
             }
         }
     }

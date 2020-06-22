@@ -8,14 +8,16 @@
         }
     }
 
+    //Cleans inputs from client side
     if (!function_exists('sanitize'))  {
         function sanitize(string $dirty) : string {
             return htmlentities($dirty, ENT_QUOTES, 'UTF-8');
+        }
     }
 
-        if (!function_exists('get_current_user')) {
-            function get_current_user() : Users {
-                return Users::current_logged_in_user();
-            }
+    //Returns current user logged in
+    if (!function_exists('current_user')) {
+        function current_user() : Users {
+            return Users::current_logged_in_user();
         }
-}
+    }
