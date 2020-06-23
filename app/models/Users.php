@@ -25,10 +25,12 @@
             }
         }
 
-        public static function current_logged_in_user() : Users {
+        public static function get_current_logged_in_user() : Users {
             if(!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)) {
                 $User = new Users((int)Session::get(CURRENT_USER_SESSION_NAME));
                 self::$currentLoggedInUser = $User;
+            }else if(self::$currentLoggedInUser == null) {
+                self::$currentLoggedInUser = new Users();
             }
 
             return self::$currentLoggedInUser;
@@ -74,7 +76,7 @@
             $user_agent = Session::get_user_agent_without_version();
             $user_session = UsersSessions::get_cookie_data();
 
-            if($user_session) {
+            if($user_session->user_id !== null) {
                 $user_session->delete($user_session->user_id);
             }
 
@@ -88,5 +90,13 @@
 
             self::$currentLoggedInUser = null;
             return true;
+        }
+
+        public function register_new_user(array $user_data) : void {
+            $this->assign($user_data);
+            $this->deleted = 0;
+            $this->password = password_hash($this->password, PASSWORD_BCRYPT, array(
+                'cost' => '12'));
+            $this->save();
         }
     }

@@ -34,7 +34,7 @@
 
                             case 'matches':
                                 if($value != $source[$rule_value]) {
-                                    $match_display = $item[$rule_value]['display'];
+                                    $match_display = $items[$rule_value]['display'];
                                     $this->add_error(["{$match_display} and {$display} must match.", $item]);
                                 }
                                 break;

@@ -88,7 +88,7 @@ class Model {
        return $data;
     }
 
-    public function assign(array $params) : bool {
+    public function assign(array $params) : void {
         if(!empty($params)) {
             foreach($params as $key => $val) {
                 if(in_array($key, $this->_columnNames)) {

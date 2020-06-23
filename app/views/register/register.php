@@ -16,7 +16,7 @@
         }
 
         .card{
-            height: 370px;
+            height: 550px;
             margin-top: auto;
             margin-bottom: auto;
             width: 400px;
@@ -95,22 +95,36 @@
         <div class="d-flex justify-content-center h-100">
             <div class="card">
                 <div class="card-header">
-                    <h3>Sign In</h3>
-                    <div class="d-flex justify-content-end social_icon">
-                        <span><i class="fab fa-facebook-square"></i></span>
-                        <span><i class="fab fa-google-plus-square"></i></span>
-                        <span><i class="fab fa-twitter-square"></i></span>
-                    </div>
+                    <h3>Sign Up</h3>
                 </div>
                 <div class="card-body">
-                    <form class="form" action="<?=PROJECTROOT?>register/login" method="post">
+                    <form class="form" action="<?=PROJECTROOT?>register/register" method="post">
                         <div class="bg-danger"><?=$this->display_errors ?></div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+                            </div>
+                            <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" value="<?=$this->post['first_name'] ?>">
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-user-circle"></i></span>
+                            </div>
+                            <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" value="<?=$this->post['last_name'] ?>">
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email" value="<?=$this->post['email'] ?>">
+
+                        </div>
+                        <div class="input-group form-group">
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text" name="username" id="username" class="form-control" placeholder="username">
-
+                            <input type="text" name="username" id="username" class="form-control" placeholder="username" value="<?=$this->post['username'] ?>">
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
@@ -118,20 +132,20 @@
                             </div>
                             <input type="password" name="password" id="password" class="form-control" placeholder="password">
                         </div>
-                        <div class="row align-items-center remember">
-                            <input type="checkbox" id="remember_me" name="remember_me" value="true">Remember Me
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="confirm" id="confirm" class="form-control" placeholder="confirm password">
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Login" class="btn float-right login_btn">
+                            <input type="submit" value="Register" class="btn float-right login_btn">
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center links">
-                        Don't have an account?<a href="<?=PROJECTROOT?>register/register">Sign Up</a>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <a href="#">Forgot your password?</a>
+                        Already have an account?<a href="<?=PROJECTROOT?>register/login">Sign In</a>
                     </div>
                 </div>
             </div>

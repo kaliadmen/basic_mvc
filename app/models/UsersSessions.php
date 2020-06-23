@@ -15,6 +15,7 @@
                     'bind' => [Session::get_user_agent_without_version(), Cookie::get(REMEMBER_ME_COOKIE_NAME)]
                 ]);
             }
+
             if(!$user_session) {
                 return false;
             }

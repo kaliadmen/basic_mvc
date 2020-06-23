@@ -8,6 +8,11 @@
         private function __construct() {
             try {
                 $this->_pdo = new PDO(DB_DRIVER.':host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD);
+                //set error mode
+                if(DEBUG) {
+                    $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $this->_pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+                }
             } catch(PDOException $e) {
                 die($e->getMessage());
             }
