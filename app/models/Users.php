@@ -99,4 +99,9 @@
                 'cost' => '12'));
             $this->save();
         }
+
+        public function get_acls() {
+            if(empty($this->acl)) return [];
+            return json_decode($this->acl, true);
+        }
     }

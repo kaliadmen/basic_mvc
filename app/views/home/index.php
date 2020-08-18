@@ -1,43 +1,142 @@
+<?php $this->start('head'); ?>
+    <style>
+        /*
+ * Globals
+ */
+
+        /* Links */
+        a,
+        a:focus,
+        a:hover {
+            color: #fff;
+        }
+
+        /* Custom default button */
+        .btn-secondary,
+        .btn-secondary:hover,
+        .btn-secondary:focus {
+            color: #333;
+            text-shadow: none; /* Prevent inheritance from `body` */
+            background-color: #fff;
+            border: .05rem solid #fff;
+        }
+
+
+        /*
+         * Base structure
+         */
+
+        html,
+        body {
+            height: 100%;
+            background-color: #333;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: -webkit-box;
+            display: flex;
+            -ms-flex-pack: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            color: #fff;
+            text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+            box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+        }
+
+        .cover-container {
+            max-width: 42em;
+        }
+
+
+        /*
+         * Header
+         */
+        .masthead {
+            margin-bottom: 2rem;
+        }
+
+        .masthead-brand {
+            margin-bottom: 0;
+        }
+
+        .nav-masthead .nav-link {
+            padding: .25rem 0;
+            font-weight: 700;
+            color: rgba(255, 255, 255, .5);
+            background-color: transparent;
+            border-bottom: .25rem solid transparent;
+        }
+
+        .nav-masthead .nav-link:hover,
+        .nav-masthead .nav-link:focus {
+            border-bottom-color: rgba(255, 255, 255, .25);
+        }
+
+        .nav-masthead .nav-link + .nav-link {
+            margin-left: 1rem;
+        }
+
+        .nav-masthead .active {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        @media (min-width: 48em) {
+            .masthead-brand {
+                float: left;
+            }
+            .nav-masthead {
+                float: right;
+            }
+        }
+
+
+        /*
+         * Cover
+         */
+        .cover {
+            padding: 0 1.5rem;
+        }
+        .cover .btn-lg {
+            padding: .75rem 1.25rem;
+            font-weight: 700;
+        }
+
+
+        /*
+         * Footer
+         */
+        .mastfoot {
+            color: rgba(255, 255, 255, .5);
+        }
+    </style>
+<?php $this->end(); ?>
 <?php $this->start('body'); ?>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="<?=PROJECTROOT?>">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?=PROJECTROOT?>register/logout">Logout</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">Cover</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link active" href="<?=PROJECTROOT?>">Home</a>
+                    <a class="nav-link" href="<?=PROJECTROOT?>register/login">Login</a>
+                    <a class="nav-link" href="<?=PROJECTROOT?>register/register">Register</a>
+                </nav>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <!-- Page Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1 class="mt-5">A Bootstrap 4 Starter Template</h1>
-                <p class="lead">Complete with pre-defined file paths and responsive navigation!</p>
-                <ul class="list-unstyled">
-                    <li>Bootstrap 4.3.1</li>
-                    <li>jQuery 3.4.1</li>
-                </ul>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">TSUDO MVC</h1>
+            <p class="lead">The MVC</p>
+            <p class="lead">
+                <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+            </p>
+        </main>
+        <footer class="mastfoot mt-auto">
+            <div class="inner">
+                <p>Tsudo</p>
             </div>
-        </div>
+        </footer>
     </div>
 <?php $this->end(); ?>

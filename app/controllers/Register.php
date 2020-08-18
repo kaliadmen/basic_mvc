@@ -29,7 +29,7 @@ class Register extends Controller {
               if($user && password_verify(Input::get('password'), $user->password)) {
                   $remember = (isset($_POST['remember_me']) && Input::get('remember_me')) ? true : false;
                   $user->login($remember);
-                  Router::redirect('');
+                  Router::redirect('admin');
               }else {
                   $validation->add_error("There is and error with your username or password");
               }

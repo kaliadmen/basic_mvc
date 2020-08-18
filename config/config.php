@@ -39,3 +39,6 @@
     //time in seconds for remember me cookie to live (30 days)
     define('REMEMBER_ME_COOKIE_EXPIRE',   2592000);
 
+    //restricted access redirect controller
+    define('ACCESS_RESTRICTED', 'Restricted');
+
