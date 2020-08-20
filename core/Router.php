@@ -5,7 +5,7 @@
             //controller
             $controller = (isset($url[0]) && $url[0] != '') ?  ucwords($url[0]) : DEFAULT_CONTROLLER;
             $controller_name = $controller;
-            $controllerLocation = ROOT.DS.'app'.DS.'controllers'.DS.$controller_name.'.php';
+            $controller_location = ROOT.DS.'app'.DS.'controllers'.DS.$controller_name.'.php';
             array_shift($url); //remove controller from url array
 
             //action
@@ -14,7 +14,7 @@
             array_shift($url); //remove action from url array
 
             //check acl
-            $grant_access = self::hasAccess($controller, $action_name);
+            $grant_access = self::has_access($controller, $action_name);
 
             if(!$grant_access) {
                 $called_controller = $controller_name;
@@ -25,7 +25,7 @@
             //parameters
             $queryParams = $url;
 
-            if (!file_exists($controllerLocation)) { //check if controller called exists
+            if (!file_exists($controller_location)) { //check if controller called exists
                 die('This controller does not exist "'.$called_controller.'"');
             }else {
                 $dispatch = new $controller_name($controller_name, $action); //instantiate controller object
@@ -54,7 +54,7 @@
             }
         }
 
-        public static function hasAccess(string $controller_name, string $action_name = 'index') : bool {
+        public static function has_access(string $controller_name, string $action_name = 'index') : bool {
             $acl_file = file_get_contents(ROOT.DS.'app'.DS.'acl.json');
             $acl = json_decode($acl_file, true);
             $current_user_acls = ['Guest'];
@@ -96,5 +96,51 @@
             }
 
             return $access_granted;
+        }
+
+        public static function get_menu(string $menu) : array{
+            $menu_array = [];
+            $menu_file = file_get_contents(ROOT.DS.'app'.DS.$menu.'.json');
+            $acl = json_decode($menu_file, true);
+
+            foreach($acl as $key => $value) {
+                if(is_array($value)) {
+                    $sub_menu = [];
+                    foreach($value as $k => $val) {
+                        if($k == 'separator' && !empty($sub_menu)) {
+                            $sub_menu[$k] = '';
+                            continue;
+                        } else if($final_val = self::get_link($val)) {
+                            $sub_menu[$k] = $final_val;
+                        }
+                    }
+                    if(!empty($sub_menu)) {
+                        $menu_array[$key] = $sub_menu;
+                    }
+                }else {
+                    if($final_val = self::get_link($value)) {
+                        $menu_array[$key] = $final_val;
+                    }
+                }
+            }
+
+            return $menu_array;
+        }
+
+        private static function get_link(string $value) : string {
+            //check for external link
+            if(preg_match('/https?:\/\//', $value) == 1) {
+                return $value;
+            } else {
+                //build link
+                $url_array = explode(DS, $value);
+                $controller_name = ucwords($url_array[0]);
+                $action_name = (isset($url_array[1])) ? $url_array[1] : '';
+                //check for access
+                if(self::has_access($controller_name, $action_name)) {
+                    return PROJECTROOT.$value;
+                }
+                return '';
+            }
         }
     }

@@ -12,6 +12,7 @@
       "Register" : ["login", "register"]
     },
     "Register" : ["logout"],
-    "Admin" : ["*"]
+    "Admin" : ["*"],
+    "Test" : ["*"]
   }
 }

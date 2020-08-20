@@ -17,6 +17,8 @@
     <?php echo $this->content('head'); ?>
 </head>
     <body>
-    <?php echo $this->content('body'); ?>
+    <?php include('main_menu.php'); ?>
+
+    <?php echo($this->content('body')); ?>
     </body>
 </html>
