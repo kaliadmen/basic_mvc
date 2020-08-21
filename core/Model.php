@@ -18,23 +18,8 @@ class Model {
         );
     }
 
-    protected function _set_table_columns() : void {
-        $columns = $this->get_columns();
-
-        foreach($columns as $column) {
-            $columnName = $column->Field;
-            $this->_columnNames[] = $column->Field;
-            $this->{$columnName} = null;
-        }
-    }
-
-    protected function _populate_object_data(Object $result) {
-        foreach($result as $key => $val) {
-            $this->$key = $val;
-        }
-    }
-
     public function find(array $params = []) : array {
+        $params = $this->_soft_delete_params($params);
         $results = [];
         $resultsQuery = $this->_db->find($this->_table, $params);
 
@@ -50,7 +35,8 @@ class Model {
 
     }
 
-    public function find_first(array $params = [])  {
+    public function find_first(array $params = []) : Model {
+        $params = $this->_soft_delete_params($params);
         $result_query = $this->_db->find_first($this->_table, $params);
         $result = new $this->_modelName($this->_table);
         if($result_query) {
@@ -65,17 +51,13 @@ class Model {
         return $this->find_first(['conditions' => 'id = ?', 'bind' => [$id]]);
     }
 
-    public function save() : bool {
-        $columns = [];
-
-        foreach($this->_columnNames as $columnName) {
-            $columns[$columnName] = $this->$columnName;
-        }
-        //determines if to update or insert
-        if(property_exists($this, 'id') && $this->id != '') {
-            return $this->update($this->id, $columns);
-        }else {
-            return $this->insert($columns);
+    public function assign(array $params) : void {
+        if(!empty($params)) {
+            foreach($params as $key => $val) {
+                if(in_array($key, $this->_columnNames)) {
+                    $this->$key = sanitize($val);
+                }
+            }
         }
     }
 
@@ -88,20 +70,6 @@ class Model {
        return $data;
     }
 
-    public function assign(array $params) : void {
-        if(!empty($params)) {
-            foreach($params as $key => $val) {
-                if(in_array($key, $this->_columnNames)) {
-                    $this->$key = sanitize($val);
-                }
-            }
-        }
-    }
-
-    public function query(string $sql, array $bind = []) : Db {
-        return $this->_db->query($sql, $bind);
-    }
-
     public function insert(array $columns) : bool {
         if(empty($columns)) {
             return false;
@@ -109,11 +77,29 @@ class Model {
         return $this->_db->insert($this->_table, $columns);
     }
 
+    public function query(string $sql, array $bind = []) : Db {
+        return $this->_db->query($sql, $bind);
+    }
+
     public function update(int $id, array $columns) : bool {
         if(empty($columns) || $id == '') {
             return false;
         }
         return $this->_db->update($this->_table, $id, $columns);
+    }
+
+    public function save() : bool {
+        $columns = [];
+
+        foreach($this->_columnNames as $columnName) {
+            $columns[$columnName] = $this->$columnName;
+        }
+        //determines if to update or insert
+        if(property_exists($this, 'id') && $this->id != '') {
+            return $this->update($this->id, $columns);
+        }else {
+            return $this->insert($columns);
+        }
     }
 
     public function delete(int $id) : bool {
@@ -131,5 +117,38 @@ class Model {
 
     public function get_columns() : array {
         return $this->_db->get_columns($this->_table);
+    }
+
+    protected function _set_table_columns() : void {
+        $columns = $this->get_columns();
+
+        foreach($columns as $column) {
+            $columnName = $column->Field;
+            $this->_columnNames[] = $column->Field;
+            $this->{$columnName} = null;
+        }
+    }
+
+    protected function _populate_object_data(Object $result) : void {
+        foreach($result as $key => $val) {
+            $this->$key = $val;
+        }
+    }
+
+    protected function _soft_delete_params(array $params) : array {
+        if($this->_softDelete){
+            if(array_key_exists('conditions', $params)) {
+                if(is_array($params['conditions'])) {
+                    $params['conditions'][] = "deleted BETWEEN -1 AND 0";
+                }
+                else {
+                    $params['conditions'] .= " AND deleted BETWEEN -1 AND 0";
+                }
+            }
+            else {
+                $params['conditions'] = "deleted BETWEEN -1 AND 0";
+            }
+        }
+        return $params;
     }
 }

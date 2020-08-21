@@ -1,5 +1,5 @@
 <?php
-class Register extends Controller {
+class RegisterController extends Controller {
 
     public function __construct($controller, $action) {
         parent::__construct($controller, $action);
@@ -31,7 +31,7 @@ class Register extends Controller {
                   $user->login($remember);
                   Router::redirect('admin');
               }else {
-                  $validation->add_error("There is and error with your username or password");
+                  $validation->add_error("There is an error with your username or password");
               }
           }
         }

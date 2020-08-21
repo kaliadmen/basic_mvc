@@ -3,9 +3,9 @@
 
         public static function route(array $url) : void{
             //controller
-            $controller = (isset($url[0]) && $url[0] != '') ?  ucwords($url[0]) : DEFAULT_CONTROLLER;
-            $controller_name = $controller;
-            $controller_location = ROOT.DS.'app'.DS.'controllers'.DS.$controller_name.'.php';
+            $controller = (isset($url[0]) && $url[0] != '') ?  ucwords($url[0]).'Controller' : DEFAULT_CONTROLLER.'Controller';
+            $controller_name = str_replace('Controller','',$controller);
+            $controller_location = ROOT.DS.'app'.DS.'controllers'.DS.$controller.'.php';
             array_shift($url); //remove controller from url array
 
             //action
@@ -14,11 +14,12 @@
             array_shift($url); //remove action from url array
 
             //check acl
-            $grant_access = self::has_access($controller, $action_name);
+            $grant_access = self::has_access($controller_name, $action_name);
 
             if(!$grant_access) {
+                $controller = ACCESS_RESTRICTED.'Controller';
                 $called_controller = $controller_name;
-                $controller_name = $controller = ACCESS_RESTRICTED;
+                $controller_name = ACCESS_RESTRICTED;
                 $action = 'indexAction';
             }
 
@@ -28,11 +29,10 @@
             if (!file_exists($controller_location)) { //check if controller called exists
                 die('This controller does not exist "'.$called_controller.'"');
             }else {
-                $dispatch = new $controller_name($controller_name, $action); //instantiate controller object
+                $dispatch = new $controller($controller_name, $action); //instantiate controller object
             }
-
             //execute controller method
-            if(method_exists($controller_name, $action)){
+            if(method_exists($controller, $action)){
                 call_user_func_array([$dispatch, $action], $queryParams);
             } else {
                 die('That method does not exist in the controller "'.$controller_name.'"');

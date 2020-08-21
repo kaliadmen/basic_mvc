@@ -1,5 +1,5 @@
 <?php
-//database class using singleton pattern.
+
     class Db {
 
         private static $_instance = null;
