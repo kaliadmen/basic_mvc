@@ -34,24 +34,24 @@
         }
     }
 
-//Returns current page being viewed
-if (!function_exists('current_page')) {
-    function current_page() : string {
-        $current_page = $_SERVER['REQUEST_URI'];
-        if($current_page == PROJECTROOT || $current_page == PROJECTROOT.'/home/index') {
-            $current_page = PROJECTROOT.'home';
+    //Returns current page being viewed
+    if (!function_exists('current_page')) {
+        function current_page() : string {
+            $current_page = $_SERVER['REQUEST_URI'];
+            if($current_page == PROJECTROOT || $current_page == PROJECTROOT.'/home/index') {
+                $current_page = PROJECTROOT.'home';
+            }
+            return $current_page;
         }
-        return $current_page;
     }
-}
 
-//Displays menu on pages excluding ones with excluded string passed in
-if (!function_exists('display_menu')) {
-    function display_menu(string $page, string $excluding) : bool {
-        if((strpos($page, $excluding) == true)) {
-            return false;
+    //Displays menu on pages excluding ones with excluded string passed in
+    if (!function_exists('display_menu')) {
+        function display_menu(string $page, string $excluding) : bool {
+            if((strpos($page, $excluding) == true)) {
+                return false;
+            }
+
+            return true;
         }
-
-        return true;
     }
-}
