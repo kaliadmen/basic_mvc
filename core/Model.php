@@ -23,6 +23,8 @@ class Model {
         $results = [];
         $resultsQuery = $this->_db->find($this->_table, $params);
 
+        if(!$resultsQuery) return [];
+
         //loop through results
         foreach($resultsQuery as $result) {
             //create a new object
