@@ -1,94 +1,119 @@
 <?php $this->set_site_title('Access Restricted'); ?>
 <?php $this->start('head'); ?>
 <style>
-    * {
+    *{
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
+        font-family: Consolas, serif;
     }
 
-    a {
-        text-decoration: none;
+    .error{
+        min-height: 100vh;
+        background: linear-gradient(0deg, #ffffff, #03a9f4);
     }
 
-    body {
-        font-weight: 600;
-        color: #343434;
-    }
-
-    .error_section {
+    .sky{
+        position: relative;
+        widows: 100%;
+        height: 60vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-        height: 100vh;
-        background-image: linear-gradient(-225deg, #1A1A1A, #343434);
-    }
-    .error_section_subtitle {
-        color: #25F193;
-        text-transform: uppercase;
-        letter-spacing: 5pt;
-        font-weight: 500;
-        font-size: 0.8rem;
-        margin-bottom: -5em;
-    }
-    .error_section .error_title {
-        --x-shadow: 0;
-        --y-shadow: 0;
-        --x:50%;
-        --y:50%;
-        font-size: 15rem;
-        transition: all 0.2s ease;
-        position: relative;
-        padding: 2rem;
-    }
-    .error_section .error_title:hover {
-        transition: all 0.2s ease;
-        text-shadow: var(--x-shadow) var(--y-shadow) 10px #1A1A1A;
-    }
-    .error_section .error_title p {
-        position: absolute;
-        top: 2rem;
-        left: 2rem;
-        background-image: radial-gradient(circle closest-side, rgba(255, 255, 255, 0.05), transparent);
-        background-position: var(--x) var(--y);
-        background-repeat: no-repeat;
-        text-shadow: none;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transition: all 0.1s ease;
     }
 
-    .btn {
-        padding: 0.8em 1.5em;
-        border-radius: 99999px;
-        background-image: linear-gradient(to top, #03A9F4, #00BCD4);
-        box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.2), inset 0px -2px 5px 0px rgba(0, 0, 0, 0.2);
-        border: none;
-        cursor: pointer;
-        text-shadow: 0px 1px #343434;
-        color: white;
-        text-transform: uppercase;
-        letter-spacing: 1.5pt;
-        font-size: 0.8rem;
-        font-weight: 700;
-        transition: ease-out 0.2s all;
+    .sky h2 {
+        font-size: 16em;
+        color: #fff;
+        text-shadow: 15px 15px 0 rgba(0, 0, 0, 0.1);
     }
-    .btn:hover {
-        text-shadow: 0px 1px 1px #ffffff;
-        transform: translateY(-5px);
-        box-shadow: 0px 4px 15px 2px rgba(0, 0, 0, 0.1), inset 0px -3px 7px 0px rgba(0, 0, 0, 0.2);
-        transition: ease-out 0.2s all;
+
+    .sky h2 span{
+        display: inline-block;
+        animation: bounce 2s ease-in-out infinite;
+    }
+
+    .sky h2 span:nth-child(even){
+        animation-delay: -1s;
+    }
+
+    .field{
+        padding: 100px;
+        height: 40vh;
+        background: #6e2308;
+        box-shadow: inset 0 20px 10px #51680c;
+        text-align: center;
+    }
+
+    .field h2{
+        color: #ffffff;
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+
+    .field a {
+        background: #fff;
+        color: #000;
+        width: 160px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 50px;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 20px;
+    }
+
+    .field a:hover{
+        background: #e0e0e0;
+        color: #242424;
+    }
+
+    .plane{
+        position: absolute;
+        bottom: 100px;
+        right: 100px;
+        max-width: 300px;
+    }
+
+    .grass{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 20px;
+        background: url("img/grass.png") bottom;
+        animation: travel 0.9s linear infinite;
+    }
+
+    @keyframes bounce {
+        0%,100%{
+            transform: translateY(-50px);
+        }
+        50%{
+            transform: translateY(50px);
+        }
+    }
+
+    @keyframes travel {
+        0%{
+            background-position: 0 0;
+        }
+        100%{
+            background-position: 94 0;
+        }
     }
 </style>
 <?php $this->end(); ?>
 
 <?php $this->start('body'); ?>
-    <section class="error_section">
-        <p class="error_section_subtitle">Opps Page is not available !</p>
-        <h1 class="error_title">
-            <p>404</p>
-            404
-        </h1>
-        <a href="<?=PROJECTROOT?>" class="btn">Back to home</a>
-    </section>
+    <div class="error">
+        <div class="sky">
+            <h2><span>4</span><span>0</span><span>4</span></h2>
+            <div class="grass"></div>
+            <img src="css/img/5a37031a715511.8527625615135547144642.png" alt="" class="plane">
+        </div>
+        <div class="field">
+            <h2>Opps...what you were looking for is not here.</h2>
+            <a href="<?=PROJECTROOT?>">Go back</a>
+        </div>
+    </div>
 <?php $this->end(); ?>

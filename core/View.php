@@ -65,4 +65,12 @@
             $this->_layout = $path;
             return;
         }
+
+        public function insert(string $path) : void {
+            include(ROOT.DS.'app'.DS.'views'.DS.$path.'.php');
+        }
+
+        public function add_partial(string $group, string $partial) : void {
+            include(ROOT.DS.'app'.DS.'views'.DS.$group.DS.'partials'.DS.$partial.'.php');
+        }
     }
