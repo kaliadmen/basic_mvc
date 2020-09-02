@@ -35,7 +35,7 @@
             if(method_exists($controller, $action)){
                 call_user_func_array([$dispatch, $action], $queryParams);
             } else {
-                die('That method does not exist in the controller "'.$controller_name.'"');
+                die('That method {'.$action.'} does not exist in the controller "'.$controller_name.'"');
             }
         }
 
