@@ -10,7 +10,8 @@
         public function validation(array $source, array $items = [], bool $csrf_validation = false) : Validate {
             $this->_errors = [];
             if($csrf_validation) {
-                if(!isset($source['csrf_token']) &&!FormHelper::validate_token($source['csrf_token'])) {
+                $csrf_is_valid = FormHelper::validate_token($source['csrf_token']);
+                if(!isset($source['csrf_token']) ||!$csrf_is_valid) {
                     $this->add_error(['Something has gone terribly wrong.', 'csrf_token']);
                 }
             }
