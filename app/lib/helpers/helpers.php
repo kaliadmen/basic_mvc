@@ -55,3 +55,9 @@
             return true;
         }
     }
+
+    if(!function_exists('get_object_properties')) {
+        function get_object_properties(object $obj) : array {
+            return get_object_vars($obj);
+        }
+    }

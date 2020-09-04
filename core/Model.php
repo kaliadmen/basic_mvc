@@ -1,13 +1,13 @@
 <?php
 class Model {
 
-    protected $_db, $_table, $_modelName, $_softDelete = false, $_columnNames = [];
+    protected $_db, $_table, $_modelName, $_softDelete = false;
     public $id;
 
     public function __construct(string $table) {
         $this->_db = DB::get_instance();
         $this->_table = $table;
-        $this->_set_table_columns();
+
         $this->_modelName = str_replace(
             ' ', '', 
             ucwords(
@@ -20,31 +20,18 @@ class Model {
 
     public function find(array $params = []) : array {
         $params = $this->_soft_delete_params($params);
-        $results = [];
-        $resultsQuery = $this->_db->find($this->_table, $params);
+        $result_query = $this->_db->find($this->_table, $params, get_class($this));
 
-        if(!$resultsQuery) return [];
-
-        //loop through results
-        foreach($resultsQuery as $result) {
-            //create a new object
-            $obj = new $this->_modelName($this->_table);
-            $obj->_populate_object_data($result);
-            $results[] = $obj;
-        }
-        //return array of objects instantiated from model class
-        return  $results;
+        if(!$result_query) return [];
+        return  $result_query;
 
     }
 
     public function find_first(array $params = []) : Model {
         $params = $this->_soft_delete_params($params);
-        $result_query = $this->_db->find_first($this->_table, $params);
-        $result = new $this->_modelName($this->_table);
-        if($result_query) {
-            $result->_populate_object_data($result_query);
-        }
-        return $result;
+        $result_query = $this->_db->find_first($this->_table, $params, get_class($this));
+
+        return $result_query;
 
 
     }
@@ -56,7 +43,7 @@ class Model {
     public function assign(array $params) : void {
         if(!empty($params)) {
             foreach($params as $key => $val) {
-                if(in_array($key, $this->_columnNames)) {
+                if(property_exists($this, $key)) {
                     $this->$key = sanitize($val);
                 }
             }
@@ -65,8 +52,8 @@ class Model {
 
     public function data() : stdClass {
        $data = new stdClass();
-       foreach($this->_columnNames as $columnName) {
-           $data->column = $this->column;
+       foreach(get_object_properties($this) as $property => $value) {
+           $data->property = $value;
        }
 
        return $data;
@@ -91,11 +78,8 @@ class Model {
     }
 
     public function save() : bool {
-        $columns = [];
+        $columns = get_object_properties($this);
 
-        foreach($this->_columnNames as $columnName) {
-            $columns[$columnName] = $this->$columnName;
-        }
         //determines if to update or insert
         if(property_exists($this, 'id') && $this->id != '') {
             return $this->update($this->id, $columns);
@@ -119,16 +103,6 @@ class Model {
 
     public function get_columns() : array {
         return $this->_db->get_columns($this->_table);
-    }
-
-    protected function _set_table_columns() : void {
-        $columns = $this->get_columns();
-
-        foreach($columns as $column) {
-            $columnName = $column->Field;
-            $this->_columnNames[] = $column->Field;
-            $this->{$columnName} = null;
-        }
     }
 
     protected function _populate_object_data(Object $result) : void {
