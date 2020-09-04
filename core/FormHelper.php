@@ -43,4 +43,19 @@
 
             return $string;
         }
+
+        public static function generate_token() : int {
+            $token = base64_encode(openssl_random_pseudo_bytes(32));
+            Session::set('csrf_token', $token);
+
+            return $token;
+        }
+
+        public static function validate_token(int $token) : bool {
+            return (Session::exists('csrf_token') && Session::get('csrf_token') == $token);
+        }
+
+        public static function csrf_input() : string {
+            return '<input type="hidden" name="csrf_token" id="csrf_token" value="'.self::generate_token().'"/>';
+        }
     }
