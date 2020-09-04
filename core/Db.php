@@ -28,7 +28,7 @@
         }
 
         //gets data from database
-        public function query(string $sql, array $params = []) : Db {
+        public function query(string $sql, array $params = [], string $class = '') : Db {
             $this->_error = false;
             if($this->_query = $this->_pdo->prepare($sql)) {
                 //counter for bind value
@@ -42,7 +42,11 @@
             }
 
             if($this->_query->execute()) {
-                $this->_result = $this->_query->fetchAll(PDO::FETCH_OBJ);
+                if(!empty($class)) {
+                    $this->_result = $this->_query->fetchAll(PDO::FETCH_CLASS, $class);
+                }else {
+                    $this->_result = $this->_query->fetchAll(PDO::FETCH_OBJ);
+                }
                 $this->_count = $this->_query->rowCount();
                 $this->_lastInsertID = $this->_pdo->lastInsertId();
             } else {
@@ -130,7 +134,7 @@
         }
 
         //makes a query to passed in table with conditions passed in as parameters
-        protected function _condition_query(string $table, array $params = []) : bool {
+        protected function _condition_query(string $table, array $params = [], string $class) : bool {
             $condition_string = '';
             $bind = [];
             $order = '';
@@ -155,7 +159,7 @@
 
             $sql = "SELECT * FROM {$table}{$condition_string}{$order}{$limit}";
 
-            if($this->query($sql, $bind)) {
+            if($this->query($sql, $bind, $class)) {
                 if(!count($this->_result)) {
                     return false;
                 }
@@ -166,16 +170,16 @@
         }
 
         //finds all records in database table based on passed in parameters
-        public function find(string $table, array $params = []) : array {
-            if($this->_condition_query($table, $params)) {
+        public function find(string $table, array $params = [], string $class) : array {
+            if($this->_condition_query($table, $params, $class)) {
                 return $this->get_result();
             }
             return ['error' => 'No results found!'];
         }
 
         //finds first records in database table based on passed in parameters
-        public function find_first(string $table, array $params = []) : stdClass {
-            if($this->_condition_query($table, $params)) {
+        public function find_first(string $table, array $params = [], string $class) {
+            if($this->_condition_query($table, $params, $class)) {
                 return $this->get_first_result();
             }
             return (object) ['DB-Error' => 'No results found!'];
@@ -187,7 +191,7 @@
         }
 
         //gets first result from query
-        public function get_first_result() : stdClass {
+        public function get_first_result() {
             return (!empty($this->_result)) ? $this->_result[0] : (object) ['error' => 'No results found!'];
         }
 
