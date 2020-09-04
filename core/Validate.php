@@ -7,9 +7,13 @@
             $this->_db = DB::get_instance();
         }
 
-        public function validation(array $source, array $items = []) : Validate {
+        public function validation(array $source, array $items = [], bool $csrf_validation = false) : Validate {
             $this->_errors = [];
-
+            if($csrf_validation) {
+                if(!isset($source['csrf_token']) &&!FormHelper::validate_token($source['csrf_token'])) {
+                    $this->add_error(['Something has gone terribly wrong.', 'csrf_token']);
+                }
+            }
             foreach($items as $item => $rules) {
                 $item = Input::sanitize($item);
                 $display = $rules['display'];
