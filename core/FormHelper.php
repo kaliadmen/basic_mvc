@@ -44,18 +44,18 @@
             return $string;
         }
 
-        public static function generate_token() : int {
+        public static function generate_token() : string {
             $token = base64_encode(openssl_random_pseudo_bytes(32));
             Session::set('csrf_token', $token);
 
             return $token;
         }
 
-        public static function validate_token(int $token) : bool {
+        public static function validate_token(string $token) : bool {
             return (Session::exists('csrf_token') && Session::get('csrf_token') == $token);
         }
 
-        public static function csrf_input() : string {
+        public static function generate_csrf_input() : string {
             return '<input type="hidden" name="csrf_token" id="csrf_token" value="'.self::generate_token().'"/>';
         }
     }
