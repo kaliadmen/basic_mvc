@@ -10,8 +10,8 @@ class RegisterController extends Controller {
     public function loginAction() : void {
         $validation = new Validate();
 
-        if($_POST) {
-          $validation->validation($_POST, [
+        if($_SERVER['REQUEST_METHOD'] == "POST") {
+          $validation->validation(FormHelper::post_values($_POST), [
               'username' => [
                   'display' => "Username",
                   'required' => true
@@ -21,7 +21,7 @@ class RegisterController extends Controller {
                   'required' => true,
                   'min' => 6
               ]
-          ]);
+          ], true);
 
           if($validation->is_valid()) {
               $user = $this->Users_Model->find_by_username($_POST['username']);
@@ -43,8 +43,8 @@ class RegisterController extends Controller {
     }
 
     public function logoutAction() : void {
-        if(current_user()) {
-            current_user()->logout();
+        if(Users::get_current_user()) {
+            Users::get_current_user()->logout();
         }
         Router::redirect('register/login');
     }
@@ -60,9 +60,9 @@ class RegisterController extends Controller {
             'confirm' => ''
         ];
 
-        if($_POST) {
-            $submitted_values = post_values($_POST);
-            $validation->validation($_POST, [
+        if($_SERVER['REQUEST_METHOD'] == "POST") {
+            $submitted_values = FormHelper::post_values($_POST);
+            $validation->validation($submitted_values, [
                 'first_name' => [
                     'display' => "First name",
                     'required' => true
@@ -99,7 +99,7 @@ class RegisterController extends Controller {
 
             if($validation->is_valid()) {
                 $new_user = new Users();
-                $new_user->register_new_user($_POST);
+                $new_user->register_new_user($submitted_values);
                 Router::redirect('register/login');
             }
 
