@@ -1,7 +1,7 @@
 <?php
     $menu = Router::get_menu('menu_acl');
     $is_active = '';
-    $current_page = current_page();
+    $current_page = Helper::current_page();
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
@@ -38,9 +38,9 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                         <ul class="pull-right">
-                            <?php if(current_user()->id): ?>
+                            <?php if(Users::get_current_user()->id): ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Hello <?=current_user()->first_name?></a>
+                                    <a class="nav-link" href="#">Hello <?=Users::get_current_user()->first_name?></a>
                                 </li>
                             <?php endif; ?>
                         </ul>

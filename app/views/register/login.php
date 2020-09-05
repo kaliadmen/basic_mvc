@@ -11,6 +11,7 @@
                         <div class="card-header">Sign In</div>
                         <div class="card-body">
                             <form action="<?=PROJECTROOT?>register/login" method="post">
+                                <?=FormHelper::generate_csrf_input() ?>
                                 <div class="bg-danger"><?=$this->display_errors ?></div>
                                 <div class="form-group row">
                                     <label for="usernames" class="col-md-4 col-form-label text-md-right">Username</label>
