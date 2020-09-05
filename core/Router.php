@@ -63,7 +63,7 @@
             if(Session::exists(CURRENT_USER_SESSION_NAME)) {
                 $current_user_acls[] = 'LoggedIn';
 
-                foreach(current_user()->get_acls() as $user_acl) {
+                foreach(Users::get_current_user()->get_acls() as $user_acl) {
                     $current_user_acls[] = $user_acl;
                 }
             }
