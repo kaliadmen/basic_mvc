@@ -58,4 +58,19 @@
         public static function generate_csrf_input() : string {
             return '<input type="hidden" name="csrf_token" id="csrf_token" value="'.self::generate_token().'"/>';
         }
+
+        //Cleans inputs from client side
+        public static function sanitize(string $dirty) : string {
+            return htmlentities($dirty, ENT_QUOTES, 'UTF-8');
+        }
+
+        //Returns array of clean submitted values
+        public static function post_values(array $values) : array {
+            $arr = [];
+            foreach($values as $key => $value) {
+                $arr[$key] = self::sanitize($value);
+            }
+
+            return $arr;
+        }
     }

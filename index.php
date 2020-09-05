@@ -3,9 +3,9 @@
 (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? define('DS', '/') : define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
 
-    //load configuration and helper functions
+    //load configuration
     require_once(ROOT.DS.'config'.DS.'config.php');
-    require_once(ROOT.DS.'app'.DS.'lib'.DS.'helpers'.DS.'functions.php');
+
 
     //autoload classes
     function autoload($className) {
