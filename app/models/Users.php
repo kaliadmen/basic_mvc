@@ -26,7 +26,7 @@
             }
         }
 
-        public static function get_current_logged_in_user() : Users {
+        public static function get_current_user() : Users {
             if(!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)) {
                 $User = new Users((int)Session::get(CURRENT_USER_SESSION_NAME));
                 self::$currentLoggedInUser = $User;
