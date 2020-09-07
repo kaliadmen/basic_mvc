@@ -1,7 +1,7 @@
 <?php
 class Model {
 
-    protected $_db, $_table, $_modelName, $_softDelete = false;
+    protected $_db, $_table, $_modelName, $_softDelete = false, $_validate = true, $_validation_errors = [];
     public $id;
 
     public function __construct(string $table) {
@@ -78,14 +78,20 @@ class Model {
     }
 
     public function save() : bool {
-        $columns = Helper::get_object_properties($this);
+        $this->validator();
 
-        //determines if to update or insert
-        if(property_exists($this, 'id') && $this->id != '') {
-            return $this->update($this->id, $columns);
-        }else {
-            return $this->insert($columns);
+        if($this->_validate) {
+            $columns = Helper::get_object_properties($this);
+
+            //determines if to update or insert
+            if(property_exists($this, 'id') && $this->id != '') {
+                return $this->update($this->id, $columns);
+            }else {
+                return $this->insert($columns);
+            }
         }
+
+        return false;
     }
 
     public function delete(int $id) : bool {
@@ -103,6 +109,33 @@ class Model {
 
     public function get_columns() : array {
         return $this->_db->get_columns($this->_table);
+    }
+
+    public function get_error_messages() : array{
+        return $this->_validation_errors;
+    }
+
+    public function get_validation_status() : bool{
+        return $this->_validate;
+    }
+
+    public function set_error_message(string $error, string $message) : void {
+        $this->_validate = false;
+        $this->_validation_errors[$error] = $message;
+    }
+
+    public function validator() : void {}
+
+    public function run_validation(CustomValidator $validator) : bool {
+        $key = $validator->column;
+
+        if(!$validator->is_valid()) {
+            $this->_validate = false;
+            $this->_validation_errors[$key] = $validator->message;
+            return false;
+        }
+
+        return true;
     }
 
     protected function _populate_object_data(Object $result) : void {
