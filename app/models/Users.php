@@ -54,6 +54,14 @@
             return $this->find_first(['conditions' => 'username = ?', 'bind' => [$username]]);
         }
 
+        public function validator(): void {
+            $this->run_validation(new MinValidator($this, [
+                'column' => 'username',
+                'rule' => 6,
+                'message' => 'Username must be at least 6 characters.'
+                ]));
+        }
+
         public function login(bool $remember_me = false) : void {
             Session::set($this->_sessionName, $this->id);
 
