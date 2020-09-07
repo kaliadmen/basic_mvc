@@ -73,4 +73,21 @@
 
             return $arr;
         }
+
+        public static function display_errors(array $errors) : string {
+            $html = '<div class="form-errors"><ul class="bg-danger">';
+            foreach($errors as $column => $error) {
+
+                $html .= '<li class="text-white">'.$error.'</li>';
+
+                $html .= '<script>$("document").ready(function() {
+                    $("#'.$column.'").addClass("is-invalid");
+                });</script>';
+
+
+            }
+            $html .= '</ul></div>';
+
+            return $html;
+        }
     }
