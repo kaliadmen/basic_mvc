@@ -10,6 +10,7 @@
 
             if(!array_key_exists('column', $params)) {
                 throw new Exception('You must add a "column" to the params array');
+            }else {
                 $this->column = (is_array($params['column'])) ? $params['column'][0] : $params['column'];
             }
 
@@ -38,5 +39,5 @@
             return $this->valid;
         }
 
-        abstract public function run_validation();
+        abstract public function run_validation() : bool;
     }
