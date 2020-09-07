@@ -1,7 +1,7 @@
 <?php
     class Users extends Model {
 
-        public $id, $username, $email, $password, $first_name, $last_name, $acl, $deleted = 0;
+        public $id, $username = '', $email = '', $password = '', $first_name = '', $last_name = '', $acl, $deleted = 0;
         private $_isLoggedIn, $_sessionName, $_cookieName;
         public static $currentLoggedInUser = null;
 
