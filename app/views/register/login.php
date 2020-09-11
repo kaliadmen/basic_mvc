@@ -11,45 +11,25 @@
                         <div class="card-header">Sign In</div>
                         <div class="card-body">
                             <form action="<?=PROJECTROOT?>register/login" method="post">
-                                <?=FormHelper::generate_csrf_input() ?>
-                                <div class="bg-danger"><?=$this->display_errors ?></div>
-                                <div class="form-group row">
-                                    <label for="usernames" class="col-md-4 col-form-label text-md-right">Username</label>
-                                    <div class="col-md-6">
-                                        <input type="text" name="username" id="username" class="form-control" placeholder="username" required autofocus>
-                                    </div>
-                                </div>
+                                <?=FormHelper::display_errors($this->display_errors)?>
 
-                                <div class="form-group row">
-                                    <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-                                    <div class="col-md-6">
-                                        <input type="password" name="password" id="password" class="form-control" placeholder="password" required>
-                                    </div>
-                                </div>
+                                <?=FormHelper::generate_csrf_input()?>
 
-                                <div class="form-group row">
-                                    <div class="col-md-6 offset-md-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" id="remember_me" name="remember_me" value="true">Remember Me
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?=FormHelper::build_input('text', 'username', 'Username', $this->login->username, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
+
+                                <?=FormHelper::build_input('password', 'password', 'Password', $this->login->username, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
+
+                                <?=FormHelper::build_checkbox_block('Remember me', 'remember_me',$this->login->get_remember_me(),['class' => 'form-group row'], ['class' => 'checkbox col-md-6 offset-md-4']) ?>
 
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary mr-3">
-                                        Sign in
-                                    </button>
+                                    <?=FormHelper::build_submit('Register', ['class' => 'btn btn-primary mr-3']) ?>
                                     Don't have an account?<a href="<?=PROJECTROOT?>register/register">Sign Up</a>
                                 </div>
+                            </form>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-
     </main>
 <?php $this->end(); ?>

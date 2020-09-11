@@ -19,13 +19,13 @@
 
                                 <?=FormHelper::build_input('text', 'last_name', 'Last Name', $this->new_user->last_name, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
 
-                                <?=FormHelper::build_input('text', 'email', 'Email', $this->new_user->email, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
+                                <?=FormHelper::build_input('email', 'email', 'Email', $this->new_user->email, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
 
                                 <?=FormHelper::build_input('text', 'username', 'Username', $this->new_user->username, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
 
                                 <?=FormHelper::build_input('password', 'password', 'Password', $this->new_user->password, ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
 
-                                <?=FormHelper::build_input('password', 'confirm', 'Confirm Password', '', ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
+                                <?=FormHelper::build_input('password', 'confirm', 'Confirm Password', $this->new_user->get_confirmed(), ['class' => 'form-group row'], ['class' => 'form-control input-sm']) ?>
 
                                 <div class="col-md-6 offset-md-4">
                                     <?=FormHelper::build_submit('Register', ['class' => 'btn btn-primary mr-3']) ?>
