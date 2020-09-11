@@ -1,6 +1,7 @@
 <?php
 
     class FormHelper {
+
         public static function build_input(string $type, string $name, string $label, string $default_value = '',
                              array $container_attributes = [], array $input_attributes = []) : string {
 
@@ -29,6 +30,18 @@
 
             $html = '<div'.$container_attributes.'>';
             $html .= '<input type="submit" value="'.$value.'" '.$input_attributes.' />';
+            $html .= '</div>';
+
+            return $html;
+        }
+
+        public static function build_checkbox_block(string $label, string $name, bool $checked = false, array $container_attributes = [], array $input_attributes = []) : string {
+            $container_attributes = (!empty($container_attributes)) ? self::attributes_to_string($container_attributes) : '';
+            $input_attributes = (!empty($input_attributes)) ? self::attributes_to_string($input_attributes) : '';
+            $check_string = ($checked) ? ' checked="checked"' : '';
+
+            $html = '<div'.$container_attributes.'>';
+            $html .= '<label for="'.$name.'">'.$label.' <input type="checkbox" id="'.$name.'" name="'.$name.'" value="true"'.$check_string.$input_attributes.'></label>';
             $html .= '</div>';
 
             return $html;
