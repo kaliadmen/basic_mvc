@@ -1,5 +1,5 @@
 <?php
-    class MinValidator extends CustomValidator {
+    class NumericValidator extends CustomValidator {
 
         public function __construct(Model $model, array $params) {
             try {
@@ -9,8 +9,11 @@
             }
         }
 
-        public function run_validation() : bool {
+        public function run_validation(): bool {
             $value = $this->_model->{$this->column};
-            return (strlen($value) >= $this->rule);
+
+            if(!empty($value)) return is_numeric($value);
+
+            return false;
         }
     }
