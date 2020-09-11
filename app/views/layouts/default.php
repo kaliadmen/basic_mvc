@@ -19,6 +19,8 @@
     <body>
     <?php include('main_menu.php'); ?>
 
+    <?=Session::display_message()?>
+
     <?php echo($this->content('body')); ?>
     </body>
 </html>
