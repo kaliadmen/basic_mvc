@@ -40,14 +40,15 @@
         public static function login_user_from_cookie() : Users {
             $user_session = UsersSessions::get_cookie_data();
 
-            if($user_session->user_id != '') {
+            if($user_session && $user_session->user_id != '') {
                 $user = new self((int)$user_session->user_id);
+
+                if($user) $user->login();
+
+                return $user;
             }
 
-            if($user) {
-                $user->login();
-            }
-            return $user;
+            return new Users();
         }
 
         public function find_by_username(string $username) : Users {
