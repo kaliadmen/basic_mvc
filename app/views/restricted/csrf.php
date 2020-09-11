@@ -105,15 +105,15 @@
 <?php $this->end(); ?>
 
 <?php $this->start('body'); ?>
-    <div class="error">
-        <div class="sky">
-            <h2><span>4</span><span>0</span><span>4</span></h2>
-            <div class="grass"></div>
-            <img src="css/img/5a37031a715511.8527625615135547144642.png" alt="" class="plane">
-        </div>
-        <div class="field">
-            <h2>Oops...what you were looking for is not here.</h2>
-            <a href="<?=PROJECTROOT?>">Go back</a>
-        </div>
+<div class="error">
+    <div class="sky">
+        <h2><span>3</span><span>0</span><span>2</span></h2>
+        <div class="grass"></div>
+        <img src="css/img/5a37031a715511.8527625615135547144642.png" alt="" class="plane">
     </div>
+    <div class="field">
+        <h2>Oops... something went wrong.</h2>
+        <a href="<?=PROJECTROOT?>">Go back</a>
+    </div>
+</div>
 <?php $this->end(); ?>
