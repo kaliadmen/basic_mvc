@@ -27,13 +27,9 @@ class Model {
 
     }
 
-    public function find_first(array $params = []) : Model {
+    public function find_first(array $params = []) {
         $params = $this->_soft_delete_params($params);
-        $result_query = $this->_db->find_first($this->_table, $params, get_class($this));
-
-        return $result_query;
-
-
+        return $this->_db->find_first($this->_table, $params, get_class($this));
     }
 
     public function find_by_id(int $id) : stdClass {
@@ -44,7 +40,7 @@ class Model {
         if(!empty($params)) {
             foreach($params as $key => $val) {
                 if(property_exists($this, $key)) {
-                    $this->$key = FormHelper::sanitize($val);
+                    $this->$key = $val;
                 }
             }
         }
@@ -81,18 +77,27 @@ class Model {
         $this->validator();
 
         if($this->_validate) {
+            $this->before_save();
             $columns = Helper::get_object_properties($this);
 
             //determines if to update or insert
             if(property_exists($this, 'id') && $this->id != '') {
-                return $this->update($this->id, $columns);
+                $save =  $this->update($this->id, $columns);
+                $this->after_save();
+                return $save;
             }else {
-                return $this->insert($columns);
+                $save = $this->insert($columns);
+                $this->after_save();
+                return $save;
             }
         }
 
         return false;
     }
+
+    public function before_save() : void {}
+
+    public function after_save() : void {}
 
     public function delete(int $id) : bool {
         if($id == '' && $this->id == '') {
