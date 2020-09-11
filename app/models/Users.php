@@ -2,7 +2,7 @@
     class Users extends Model {
 
         public $id, $username = '', $email = '', $password = '', $first_name = '', $last_name = '', $acl, $deleted = 0;
-        private $_isLoggedIn, $_sessionName, $_cookieName;
+        private $_isLoggedIn, $_sessionName, $_cookieName, $_confirmed;
         public static $currentLoggedInUser = null;
 
         public function __construct($user = '') {
@@ -55,11 +55,53 @@
         }
 
         public function validator(): void {
+            $this->run_validation(new RequiredValidator($this, ['column' => 'first_name', 'message' => 'First Name is required']));
+
+            $this->run_validation(new RequiredValidator($this, ['column' => 'last_name', 'message' => 'Last Name is required']));
+
+            $this->run_validation(new RequiredValidator($this, ['column' => 'email', 'message' => 'Email is required']));
+
+            $this->run_validation(new EmailValidator($this, ['column' => 'email', 'message' => 'Email must be a valid email']));
+
+            $this->run_validation(new RequiredValidator($this, ['column' => 'password', 'message' => 'Password is required']));
+
+            $this->run_validation(new MatchValidator($this, ['column' => 'password', 'rule' => $this->_confirmed, 'message' => 'Passwords do not match']));
+
             $this->run_validation(new MinValidator($this, [
                 'column' => 'username',
                 'rule' => 6,
                 'message' => 'Username must be at least 6 characters.'
                 ]));
+
+            $this->run_validation(new MinValidator($this, [
+                'column' => 'password',
+                'rule' => 8,
+                'message' => 'Password must be at least 8 characters.'
+            ]));
+
+            $this->run_validation(new MaxValidator($this, [
+                'column' => 'email',
+                'rule' => 150,
+                'message' => 'Email must be less than 151 characters.'
+            ]));
+
+            $this->run_validation(new MaxValidator($this, [
+                'column' => 'password',
+                'rule' => 32,
+                'message' => 'Password must be less than 151 characters.'
+            ]));
+
+            $this->run_validation(new MaxValidator($this, [
+                'column' => 'username',
+                'rule' => 150,
+                'message' => 'Username must be less than 16 characters.'
+            ]));
+
+            $this->run_validation(new UniqueValidator($this, ['column' => 'username', 'message' => 'Username is taken']));
+
+            $this->run_validation(new UniqueValidator($this, ['column' => 'email', 'message' => 'Email is taken']));
+
+            $this->run_validation(new PasswordValidator($this, ['column' => 'password', 'message' => 'Password must contain at least one lowercase, uppercase, special character and number']));
         }
 
         public function login(bool $remember_me = false) : void {
@@ -101,16 +143,21 @@
             return true;
         }
 
-        public function register_new_user(array $user_data) : void {
-            $this->assign($user_data);
-            $this->deleted = 0;
+        public function before_save() : void {
             $this->password = password_hash($this->password, PASSWORD_BCRYPT, array(
                 'cost' => '12'));
-            $this->save();
         }
 
         public function get_acls() {
             if(empty($this->acl)) return [];
             return json_decode($this->acl, true);
+        }
+
+        public function get_confirmed() : string {
+            return $this->_confirmed;
+        }
+
+        public function set_confirmed(string $value): void {
+            $this->_confirmed = $value;
         }
     }
