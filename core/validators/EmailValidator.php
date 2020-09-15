@@ -1,7 +1,10 @@
 <?php
-    class EmailValidator extends CustomValidator {
+    namespace Core\Validators;
+    use Core\Validators\BaseValidator;
 
-        public function __construct(Model $model, array $params) {
+    class EmailValidator extends BaseValidator {
+
+        public function __construct($model, array $params) {
             try {
                 parent::__construct($model, $params);
             } catch(Exception $e) {

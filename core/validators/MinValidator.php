@@ -1,7 +1,12 @@
 <?php
-    class MinValidator extends CustomValidator {
+    namespace Core\Validators;
+    use Core\Validators\BaseValidator;
+    use Exception;
 
-        public function __construct(Model $model, array $params) {
+
+    class MinValidator extends BaseValidator {
+
+        public function __construct($model, array $params) {
             try {
                 parent::__construct($model, $params);
             } catch(Exception $e) {

@@ -1,8 +1,11 @@
 <?php
+    namespace Core\Validators;
+    use Core\Validators\BaseValidator;
+    use Exception;
 
-    class RequiredValidator extends CustomValidator {
+    class RequiredValidator extends BaseValidator {
 
-        public function __construct(Model $model, array $params) {
+        public function __construct($model, array $params) {
             try {
                 parent::__construct($model, $params);
             } catch(Exception $e) {
