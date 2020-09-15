@@ -1,11 +1,14 @@
 <?php
-    abstract class CustomValidator {
+    namespace Core\Validators;
+    use \Exception;
+
+    abstract class BaseValidator {
 
         public $valid = true, $message = '', $column, $rule;
 
         protected $_model;
 
-        public function __construct(Model $model, array $params)  {
+        public function __construct($model, array $params)  {
             $this->_model = $model;
 
             if(!array_key_exists('column', $params)) {
