@@ -1,4 +1,6 @@
 <?php
+    namespace Core;
+
     class Cookie {
 
         public static function exists(string $name) : bool {

@@ -1,4 +1,6 @@
 <?php
+    namespace Core;
+
     class Helper {
 
         //Dump and die for debugging

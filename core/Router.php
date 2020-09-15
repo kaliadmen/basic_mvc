@@ -1,4 +1,9 @@
 <?php
+    namespace Core;
+    use Core\Session;
+    use App\Models\Users;
+
+
     class Router {
 
         public static function route(array $url) : void{
@@ -29,6 +34,7 @@
             if (!file_exists($controller_location)) { //check if controller called exists
                 die('This controller does not exist "'.$called_controller.'"');
             }else {
+                $controller = 'App\Controllers\\'.$controller;
                 $dispatch = new $controller($controller_name, $action); //instantiate controller object
             }
             //execute controller method

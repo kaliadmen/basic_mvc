@@ -1,8 +1,10 @@
 <?php
- class Session {
+    namespace Core;
+
+     class Session {
 
      public static function exists(string $name) : bool {
-         return (isset($_SESSION[$name])) ? true : false;
+         return isset($_SESSION[$name]);
      }
 
      public static function get(string $name) : string {

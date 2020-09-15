@@ -1,4 +1,6 @@
 <?php
+    namespace Core;
+
 /*Application class is the parent to all controllers*/
     class Application {
 

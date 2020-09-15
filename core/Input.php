@@ -1,4 +1,8 @@
 <?php
+    namespace Core;
+    use Core\FormHelper;
+    use Core\Router;
+
     class Input {
 
         public function is_post() : bool {
