@@ -1,4 +1,10 @@
 <?php
+use Core\Router;
+use Core\Session;
+use Core\Cookie;
+use App\Models\Users;
+
+
 //use '/' when in Windows or use default DIRECTORY_SEPARATOR on non Windows
 (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? define('DS', '/') : define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
@@ -8,17 +14,14 @@ define('ROOT', dirname(__FILE__));
 
 
     //autoload classes
-    function autoload($className) {
-        if(file_exists(ROOT.DS.'core'.DS.$className.'.php')){
-            require_once(ROOT.DS.'core'.DS.$className.'.php');
-        }elseif(file_exists(ROOT.DS.'app'.DS.'controllers'.DS.$className.'.php')){
-            require_once(ROOT.DS.'app'.DS.'controllers'.DS.$className.'.php');
-        }elseif(file_exists(ROOT.DS.'app'.DS.'models'.DS.$className.'.php')){
-            require_once(ROOT.DS.'app'.DS.'models'.DS.$className.'.php');
-        }elseif(file_exists(ROOT.DS.'app'.DS.'custom_validators'.DS.$className.'.php')){
-            require_once(ROOT.DS.'app'.DS.'custom_validators'.DS.$className.'.php');
-        }elseif(file_exists(ROOT.DS.'core'.DS.'validators'.DS.$className.'.php')){
-            require_once(ROOT.DS.'core'.DS.'validators'.DS.$className.'.php');
+    function autoload(string $class_name) : void {
+        $class_array = explode('\\', $class_name);
+        $class = array_pop($class_array);
+        $sub_path = strtolower(implode(DS, $class_array));
+        $path = ROOT.DS.$sub_path.DS.$class.'.php';
+
+        if(file_exists($path)) {
+            require_once($path);
         }
     }
 
