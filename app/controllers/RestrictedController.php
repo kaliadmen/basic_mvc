@@ -1,4 +1,7 @@
 <?php
+    namespace App\Controllers;
+    use Core\Controller;
+
     class RestrictedController extends Controller {
 
         public function __construct($controller, $action) {
