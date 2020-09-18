@@ -1,4 +1,14 @@
 <?php
+    namespace App\Models;
+    use Core\Model;
+    use Core\Session;
+    use Core\Cookie;
+    use App\Models\Users;
+    use App\Models\UsersSessions;
+    use Core\Validators\{RequiredValidator, EmailValidator, MatchValidator, MinValidator, MaxValidator, UniqueValidator};
+    use App\CustomValidators\PasswordValidator;
+
+
     class Users extends Model {
 
         public $id, $username = '', $email = '', $password = '', $first_name = '', $last_name = '', $acl, $deleted = 0;
@@ -13,9 +23,9 @@
             $this->_softDelete = true;
             if($user != '') {
                 if(is_int($user)) {
-                    $u = $this->_db->find_first('users', ['conditions' => 'id = ?', 'bind' => [$user]], 'Users');
+                    $u = $this->_db->find_first('users', ['conditions' => 'id = ?', 'bind' => [$user]], 'App\Models\Users');
                 } else {
-                    $u = $this->_db->find_first('users', ['conditions' => 'username = ?', 'bind' => [$user]], 'Users');
+                    $u = $this->_db->find_first('users', ['conditions' => 'username = ?', 'bind' => [$user]], 'App\Models\Users');
                 }
                 
                 if($u) {

@@ -1,4 +1,9 @@
 <?php
+    namespace App\Models;
+    use Core\Model;
+    use Core\Cookie;
+    use Core\Session;
+
     class UsersSessions extends Model {
 
         public $id, $user_id, $session, $user_agent;
