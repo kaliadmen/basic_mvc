@@ -1,3 +1,4 @@
+<?php use Core\Session; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
