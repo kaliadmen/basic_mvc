@@ -110,7 +110,8 @@
 
             $this->run_validation(new UniqueValidator($this, ['column' => 'username', 'message' => 'Username is taken']));
 
-            $this->run_validation(new UniqueValidator($this, ['column' => 'email', 'message' => 'Email is taken']));
+            if($this->is_new())
+                $this->run_validation(new UniqueValidator($this, ['column' => 'email', 'message' => 'Email is taken']));
 
             $this->run_validation(new PasswordValidator($this, ['column' => 'password', 'message' => 'Password must contain at least one lowercase, uppercase, special character and number']));
         }
@@ -155,8 +156,10 @@
         }
 
         public function before_save() : void {
-            $this->password = password_hash($this->password, PASSWORD_BCRYPT, array(
+            if($this->is_new())
+                $this->password = password_hash($this->password, PASSWORD_BCRYPT, array(
                 'cost' => '12'));
+            //TODO: Implement change password method
         }
 
         public function get_acls() {
