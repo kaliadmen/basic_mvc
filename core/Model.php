@@ -132,6 +132,10 @@
             $this->_validation_errors[$error] = $message;
         }
 
+        public function is_new() : bool {
+            return property_exists($this, 'id') && !empty($this->id);
+        }
+
         public function validator() : void {}
 
         public function run_validation(BaseValidator $validator) : bool {
