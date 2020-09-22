@@ -22,4 +22,14 @@
                 $this->{$model.'_Model'} = new $model_path();
             }
         }
+
+        public function response_to_json(array $res) : string {
+            header("Access-Control-Allow-Origin");
+            header("Content-Type: application/json; charset=UTF-8");
+
+            http_response_code(200);
+
+            echo json_encode($res);
+            exit();
+        }
     }
